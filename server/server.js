@@ -16,6 +16,8 @@ app.use(
 );
 app.use(express.json());
 
+/* CONFIG CLOUDINARY */
+
 cloudinary.config({
   cloud_name: "dbo6hyl8t",
   api_key: "184175781875795",
@@ -23,22 +25,13 @@ cloudinary.config({
   secure: true,
 });
 
-/* app.use(express.static(path.join(__dirname, "reactnode/build")));
- */
-/* app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./reactnode/build/index.html"));
-});
-var con = mysql.createConnection({
-  host: "mysql-enzmrg.alwaysdata.net",
-  user: "enzmrg",
-  password: "5()Amg9709",
-  database: "enzmrg_db",
-}); */
-var viergeConnection = mysql.createConnection({
+let bddConfig = {
   host: "localhost",
   user: "root",
   password: "",
-});
+};
+
+var viergeConnection = mysql.createConnection(bddConfig);
 
 app.get("/api", (req, res) => {
   viergeConnection.connect((error) => {
@@ -47,12 +40,11 @@ app.get("/api", (req, res) => {
 
   /* CREATE A NEW CONNECTION WITH DB : ecfprojet*/
 
-  let connectionNew = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "ecfprojet",
+  Object.defineProperty(bddConfig, "database", {
+    value: "ecfprojet",
   });
+
+  let connectionNew = mysql.createConnection(bddConfig);
 
   /* CREATE NEW TABLE FOR AUTH ACCESS AND INSERT DEFAULT VALUE */
 
