@@ -12,7 +12,7 @@ Voici donc les 3 changements principaux du passe en ligna a local.
 
 ##
 
-EDITATION BDD
+EDITION BDD
 
 Si l'exécution en local se fait via autre chose que XAMPP qui nécessite un mot de passe pour sa BDD :
 
