@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import { userData } from "../../data/Connect";
-import ContainerSettings from "../../assets/style/profilComponentsStyle";
+import { ContainerSettings } from "../../assets/style/profilComponentsStyle";
 import updateProfil from "../../data/updateProfil";
 
 const ProfilComponent = ({ displayProfil }) => {
