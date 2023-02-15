@@ -18,9 +18,9 @@ Si l'exécution en local se fait via autre chose que XAMPP qui nécessite un mot
 
 - Cf : ~server/server.js -> l.28
 
-EXECUTION DES SCRIPTS
-
 ##
+
+EXECUTION DES SCRIPTS
 
 - Activez la liaison Appache et MySQL 
 - ouvrir 2 terminals (VsCode à la racine du projet) 
@@ -29,9 +29,9 @@ EXECUTION DES SCRIPTS
 
 =>L'application react s'ouvriera directement (au port 3000 du localhost normallement) 
 
-GESTION DE L'ADMIN ET DE LA BDD
-
 ##
+
+GESTION DE L'ADMIN ET DE LA BDD
 
 -   Le profil admin et déja mis au démarrage de l'application tout comme la Base de donnée qui ce nommera ici `ecfprojet`
 -   Pour accéder à l'espace admin en ligne comme en local il faudra se connecter sur l'application avec les données suivantes :
@@ -39,8 +39,8 @@ GESTION DE L'ADMIN ET DE LA BDD
     -   Mot de passe : admin
 Et une route privé vous serra réservé.
 
-FICHIERS ALIMENTATION ET CRÉATION DE LA BDD 
-
 ##
+
+FICHIERS ALIMENTATION ET CRÉATION DE LA BDD 
 
 chemin : ~server/server.js
