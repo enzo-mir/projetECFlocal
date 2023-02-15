@@ -33,7 +33,7 @@ let bddConfig = {
 
 var viergeConnection = mysql.createConnection(bddConfig);
 
-app.get("/api", (req, res) => {
+app.post("/api", (req, res) => {
   viergeConnection.connect((error) => {
     viergeConnection.query("CREATE DATABASE IF NOT EXISTS `ecfprojet`");
   });
@@ -227,13 +227,6 @@ app.get("/api", (req, res) => {
   /* UPDATE DE USER PROFIL */
 
   app.post("/updateProfil", (req, res) => {
-    let connectionNew = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "",
-      database: "ecfprojet",
-    });
-
     connectionNew.query(
       `UPDATE connexion SET userName="${req.body.nom}",email="${req.body.email}",convive=${req.body.convives},alergie="${req.body.alergies}" WHERE email="${req.body.oldEmail}" AND password="${req.body.mdp}"`,
       (error, success) => {
@@ -258,6 +251,20 @@ app.get("/api", (req, res) => {
   /* DELETING ACCOUNT */
   app.post("/deletAccount", (req, res) => {
     let response = req.body;
+    connectionNew.query(
+      `DELETE FROM connexion WHERE userName="${response.nom}" AND email="${response.email}"`,
+      (err, success) => {
+        console.log(success.length);
+
+        if (success) {
+          res.send(success).status(200);
+        } else {
+          res.send({
+            erreur: "Un problème est survenus lors de la suppression du profil",
+          });
+        }
+      }
+    );
   });
 
   app.post("/adminHours", (req, res) => {
@@ -374,7 +381,7 @@ app.get("/api", (req, res) => {
 
   /*WRITE CARTE DATA  */
 
-  app.get("/carteapi", (req, res) => {
+  app.post("/carteapi", (req, res) => {
     connectionNew.query("SELECT * FROM `entree`", (error, entree) => {
       error ? console.log(error) : null;
       connectionNew.query("SELECT * FROM `plat`", (error, plat) => {
@@ -465,5 +472,5 @@ app.get("/api", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("hello " + PORT);
+  console.log("connecté au port : " + PORT);
 });

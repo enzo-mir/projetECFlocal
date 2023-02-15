@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import { userData } from "../../data/Connect";
-import styled from "styled-components";
+import ContainerSettings from "../../assets/style/profilComponentsStyle";
 import updateProfil from "../../data/updateProfil";
 
 const ProfilComponent = ({ displayProfil }) => {
@@ -87,7 +87,7 @@ const ProfilComponent = ({ displayProfil }) => {
                       "userLogin",
                       JSON.stringify(data)
                     ),
-                    (window.location.href = "/"),
+                    window.location.reload(),
                     (event.target.style.pointerEvents = "none"),
                     setTimeout(() => {
                       event.target.style.pointerEvents = "auto";
@@ -114,8 +114,7 @@ const ProfilComponent = ({ displayProfil }) => {
       );
   }
 
-  function deletAccount() {
-
+  function deletAccount(event) {
     fetch("/deletAccount", {
       method: "POST",
       headers: {
@@ -129,7 +128,18 @@ const ProfilComponent = ({ displayProfil }) => {
         convives: guests,
         allergies: alergy,
       }),
-    });
+    }).then((data) =>
+      Object.keys(data) == "erreur"
+        ? setValidationMessage(Object.values(data))
+        : (setValidationMessage("Profil supprimé"),
+          window.localStorage.clear("userLogin"),
+          window.location.reload(),
+          (event.target.style.pointerEvents = "none"),
+          setTimeout(() => {
+            event.target.style.pointerEvents = "auto";
+            displayProfil(false);
+          }, 2000))
+    );
   }
 
   return (
@@ -176,54 +186,11 @@ const ProfilComponent = ({ displayProfil }) => {
           >
             Déconnection
           </button>
-          <button onClick={() => deletAccount()}>supprimer le compte</button>
+          <button onClick={(e) => deletAccount(e)}>supprimer le compte</button>
         </div>
       </ContainerSettings>
     </Overlay>
   );
 };
-
-const ContainerSettings = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  gap: 5vh;
-  padding-block: 50px;
-  width: 1000px;
-  min-height: 60vh;
-  max-width: 100%;
-  z-index: 150;
-  background-color: #fff;
-  font-size: var(--font-size);
-
-  & div:not(.passwordField) {
-    display: grid;
-    width: 100%;
-    grid-template-columns: 1fr 1fr;
-    place-items: center;
-
-    &.cta {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-    }
-  }
-
-  & input {
-    border: 1px solid var(--darker-color-a30);
-    padding: 0.7em;
-    font-size: var(--font-size-little);
-    border-radius: 10px;
-  }
-
-  .error {
-    background-color: var(--primary-color);
-    padding: 1rem;
-    border-radius: 5px;
-    text-align: center;
-  }
-`;
 
 export default ProfilComponent;

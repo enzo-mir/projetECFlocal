@@ -39,7 +39,7 @@ const LogContainer = styled.section`
       }
     }
 
-    @media screen and (width <= 600px) {
+    @media screen and (max-width: 600px) {
       flex-direction: column;
     }
   }

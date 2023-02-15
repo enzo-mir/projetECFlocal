@@ -81,7 +81,7 @@ export const Wrapper = styled.footer`
     font-size: var(--font-size-little);
   }
 
-  @media screen and (width <= 800px) {
+  @media screen and (max-width : 800px) {
     & nav {
       width: 50%;
     }
@@ -90,7 +90,7 @@ export const Wrapper = styled.footer`
     }
   }
 
-  @media screen and (width <= 600px) {
+  @media screen and (max-width : 600px) {
     width: 100%;
     & nav {
       width: 100%;

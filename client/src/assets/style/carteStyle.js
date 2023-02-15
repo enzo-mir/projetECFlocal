@@ -72,7 +72,7 @@ const MenuContainer = styled.div`
     }
   }
 
-  @media screen and (width <= 1050px) {
+  @media screen and (max-width: 1050px) {
     display: flex;
     flex-direction: column;
 
@@ -160,7 +160,7 @@ const DessertSection = styled.div`
     width: 60%;
   }
 
-  @media screen and (width <= 1050px) {
+  @media screen and (max-width: 1050px) {
     display: flex;
     flex-direction: column;
     justify-content: space-around;

@@ -69,7 +69,7 @@ export default function Reserv({ res }) {
       case "12H - 14H":
         return lunchTable.map((lunch, id) => {
           return (
-            <button key={id} onFocus={selectHours} tabIndex={id}>
+            <button key={id} onClick={selectHours} tabIndex={id}>
               {lunch}
             </button>
           );
@@ -102,6 +102,11 @@ export default function Reserv({ res }) {
   };
 
   function submitReservation(e) {
+    e.target.parentNode.parentNode.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
     let hourTargeted = document.querySelector(".selected")
       ? document.querySelector(".selected").textContent
       : null;
@@ -173,19 +178,18 @@ export default function Reserv({ res }) {
           <input
             type="number"
             id="persons"
+            placeholder="convives par défaut (1-9)"
             max="9"
             min="1"
             value={guests}
             onChange={(e) => setGuests(e.target.value)}
             maxLength="2"
-            required
           />
           <input
             type="date"
             id="date"
             onChange={handleChangeDate}
             min={new Date().toLocaleDateString("fr-CA")}
-            required
           />
           <input
             type="email"

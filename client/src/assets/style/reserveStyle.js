@@ -6,11 +6,11 @@ import guests from "../images/guests.png";
 const ReservationContainer = styled.section`
   position: absolute;
   display: grid;
+  grid-template-rows: 0 1fr 1fr 1fr1 1fr;
   gap: 5vh;
   place-items: center;
   padding-block: 50px;
   width: 1000px;
-  max-height: 80vh;
   overflow-y: scroll;
   z-index: 150;
   background-color: #fff;
@@ -51,8 +51,12 @@ const ReservationContainer = styled.section`
       grid-area: 2 / 1 / 3 / 3;
     }
   }
-  @media screen and (width <= 600px) {
+  @media screen and (max-width: 600px) {
     gap: 2vh;
+  }
+
+  @media screen and (max-height: 900px) {
+    max-height: 60vh;
   }
 `;
 
@@ -69,21 +73,28 @@ const OptionsReserv = styled.div`
     background-color: var(--darker-color);
     color: #fff;
     border: none;
-    padding: 5px 0.5em 5px 3em;
     height: 30px;
-    width: clamp(150px, 100%, 250px);
+    width: clamp(200px, 100%, 250px);
+    text-align: center;
+    &::placeholder {
+      color: var(--color-whiteless);
+    }
+
+    &[type="date"] {
+      min-width: 100%;
+    }
   }
   & span {
     position: absolute;
     top: 0;
     left: 0;
-    transform: translateX(-50%);
+    transform: translate(25%, 25%);
     background: url(${guests});
-    background-size: 50%;
+    background-size: 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     z-index: 50;
   }
 
@@ -116,7 +127,7 @@ const OptionsReserv = styled.div`
     }
   }
 
-  @media screen and (width <= 600px) {
+  @media screen and (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 `;

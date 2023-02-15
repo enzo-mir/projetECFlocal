@@ -73,13 +73,12 @@ const ContextText = styled.div`
 
 const SectionPlats = styled.section`
   position: relative;
-  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 0.75fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(2, 1fr);
   place-items: center;
   row-gap: 10vh;
-  width: clamp(100%, 60%, 1400px);
+  width: clamp(300px, 80%, 1400px);
 
   & .imagesGalery {
     display: grid;
@@ -126,20 +125,19 @@ const SectionPlats = styled.section`
       border-radius: 10px;
       transition: 0.15s ease-out;
     }
-    @media screen and (width <= 600px) {
+    @media screen and (max-width: 600px) {
       width: 100%;
       grid-template-columns: 100%;
     }
   }
 
   & > p {
-    width: 90%;
+    width: 100%;
     grid-area: 1 / 2 / 2 / 3;
     text-align: center;
     font-size: var(--font-size);
     background-color: var(--primary-color);
     padding: 1em;
-    border-radius: 10px;
     line-height: 150%;
   }
   & button {
@@ -149,7 +147,7 @@ const SectionPlats = styled.section`
     font-size: var(--font-size);
   }
 
-  @media screen and (width <= 600px) {
+  @media screen and (max-width: 600px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
