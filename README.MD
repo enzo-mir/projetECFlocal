@@ -12,22 +12,23 @@ Voici donc les 3 changements principaux du passage en ligne a local.
 
 ##
 
-EDITION BDD
-
-Si l'exécution en local se fait via autre chose que XAMPP qui nécessite un mot de passe pour sa BDD ,éditer la variable bddConfig:
-
-- Cf : ~server/server.js -> l.28
-
-##
-
 EXECUTION DES SCRIPTS
 
+- Ouvrez un terminal et tappez : git clone https://github.com/enzo-mir/projetECFlocal.git
 - Activez la liaison Appache et MySQL 
 - ouvrir 2 terminals (VsCode à la racine du projet) 
 - dans l'un tappez : npm run startserve
 - dans le deuxième : npm run startclient
 
 =>L'application react s'ouvriera directement (au port 3000 du localhost normallement) 
+
+##
+
+EDITION BDD
+
+Si l'exécution en local se fait via autre chose que XAMPP qui nécessite un mot de passe pour sa BDD ,éditer la variable bddConfig:
+
+- Cf : ~server/server.js -> l.28
 
 ##
 
