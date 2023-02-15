@@ -8,7 +8,7 @@ Je n'ais volontairement pas fait qu'une version éditable en fonction du local o
 - la liasons avec la BDD en ligne
 - le body pars côtés server
 
-Voici donc les 3 changements principaux du passe en ligna a local.
+Voici donc les 3 changements principaux du passage en ligne a local.
 
 ##
 
