@@ -15,6 +15,7 @@ const Wrapper = styled.header`
 `;
 const BtnMenu = styled.span`
   position: absolute;
+  display: none;
   width: 32px;
   height: 32px;
   background-image: url("${hamburgerBtn}");
@@ -23,6 +24,10 @@ const BtnMenu = styled.span`
 
   &:hover {
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 600px) {
+    display: block;
   }
 `;
 
@@ -67,7 +72,7 @@ const HeaderContainer = styled.div`
     padding-inline: 1em;
   }
 
-  &.mobilHeader {
+  @media screen and (max-width: 600px) {
     background-color: var(--primary-color);
     position: absolute;
     top: 100px;

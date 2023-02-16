@@ -9,6 +9,7 @@ import {
   HoursList,
 } from "../../assets/style/reserveStyle";
 import { userData } from "../../data/Connect";
+import { Cross } from "../../assets/style/cross";
 
 export default function Reserv({ res }) {
   const [fet, setFet] = useState([]);
@@ -51,7 +52,18 @@ export default function Reserv({ res }) {
     "21h15",
     "21h30",
   ];
+
+  function unselectHours() {
+    document.onmouseup = (e) => {
+      let obj = document.querySelector(".selected");
+      if (!obj.contains(e.target)) {
+        obj.classList.remove("selected");
+      }
+    };
+  }
+
   function selectHours(e) {
+    unselectHours();
     let parentToGetJourney =
       e.target.parentNode.parentNode.parentNode.getAttribute("id");
     let getJourney = parentToGetJourney.slice(
@@ -163,14 +175,15 @@ export default function Reserv({ res }) {
       setGuests(userData.convive);
       setName(userData.userName);
       setEmail(userData.email);
-      setShowAllergy(true);
-      setAlergy(userData.alergie);
+      setShowAllergy(userData.alergie !== "aucune" ? true : false);
+      setAlergy(userData.alergie !== "aucune" ? userData.alergie : "");
     }
   }
 
   return (
     <Overlay onClick={() => res(false)}>
       <ReservationContainer onClick={(e) => e.stopPropagation()}>
+        <Cross onClick={() => res(false)} />
         <h1>Réservez votre table</h1>
         {resError ? <ErrorReservation /> : null}
         <OptionsReserv>
@@ -267,7 +280,6 @@ export default function Reserv({ res }) {
               onchange={(e) => setAlergy(e.target.value)}
             />
           )}
-
           <button type="submit" onClick={submitReservation}>
             Réservez la table
           </button>

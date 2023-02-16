@@ -187,7 +187,9 @@ app.post("/api", (req, res) => {
         (error, result) => {
           if (result.length < 1) {
             connectionNew.query(
-              `INSERT INTO connexion(id, userName, email, password, convive, alergie) VALUES (null,'${nom}','${email}','${mdp}','${convives}','${alergies}')`,
+              `INSERT INTO connexion(id, userName, email, password, convive, alergie) VALUES (null,'${nom}','${email}','${mdp}','${convives}','${
+                alergies !== undefined ? alergies : "aucune"
+              }')`,
               (err, success) => {
                 if (success) {
                   res.send(body);

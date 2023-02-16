@@ -11,10 +11,13 @@ const ReservationContainer = styled.section`
   place-items: center;
   padding-block: 50px;
   width: 1000px;
+  max-width: calc(100% - 65px);
+  max-height: 600px;
   overflow-y: scroll;
   z-index: 150;
   background-color: #fff;
   font-size: var(--font-size);
+  padding-inline: 1em;
 
   & h1 {
     font-size: var(--font-size-bigger);
@@ -50,7 +53,14 @@ const ReservationContainer = styled.section`
     &:has(div) button {
       grid-area: 2 / 1 / 3 / 3;
     }
+
+    @media screen and (max-width: 480px) {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
   }
+
   @media screen and (max-width: 600px) {
     gap: 2vh;
   }
@@ -138,18 +148,23 @@ const HoursList = styled.ul`
   row-gap: 3cqh;
   font-size: var(--font-size-reg);
   flex-wrap: wrap;
-  max-width: 80%;
+  padding-inline: 5em;
+  max-width: 100%;
 
   & button {
     background-color: var(--primary-color);
     color: inherit;
     border-radius: 5px;
-    font-size: var(--font-size-reg);
+    font-size: var(--font-size);
     transition: 0.2s ease-out;
 
     &.selected {
       filter: brightness(70%);
     }
+  }
+
+  @media screen and (max-width: 600px) {
+    padding-inline: 2em;
   }
 `;
 

@@ -17,15 +17,6 @@ const Header = ({ isConnected, display }) => {
   const [profilPage, setProfilPage] = useState(false);
   const [res, setRes] = useState(false);
   const [togglePage, setTogglePage] = useState("");
-  const [windowsWidth, setWindowsWidth] = useState(window.innerWidth);
-  const [responsiveMenu, setResponsiveMenu] = useState(
-    window.innerWidth <= 600 ? true : false
-  );
-
-  window.onresize = (e) => {
-    setWindowsWidth(e.target.innerWidth);
-    setResponsiveMenu(window.matchMedia("(width <= 600px)").matches);
-  };
 
   document.onmouseup = (e) => {
     let obj = document.querySelector("header");
@@ -39,7 +30,7 @@ const Header = ({ isConnected, display }) => {
 
   const NavMenu = () => {
     return (
-      <HeaderContainer className={responsiveMenu ? "mobilHeader" : null}>
+      <HeaderContainer>
         <NavContent>
           <ul>
             <li>
@@ -87,9 +78,16 @@ const Header = ({ isConnected, display }) => {
     );
   };
 
-  const MobilMenu = () => {
-    return (
-      <>
+  return display ? (
+    <>
+      {logPage && <Log displayPage={setLogPage} togglePage={togglePage} />}
+      {profilPage && <ProfilComponent displayProfil={setProfilPage} />}
+      {res && <Reserv res={setRes} />}
+
+      <Wrapper>
+        <div className="imgContainer">
+          <img src={icon} alt="Icon du site" />
+        </div>
         <NavMenu />
         <BtnMenu
           onClick={(e) => {
@@ -114,21 +112,6 @@ const Header = ({ isConnected, display }) => {
             });
           }}
         />
-      </>
-    );
-  };
-
-  return display ? (
-    <>
-      {logPage && <Log displayPage={setLogPage} togglePage={togglePage} />}
-      {profilPage && <ProfilComponent displayProfil={setProfilPage} />}
-      {res && <Reserv res={setRes} />}
-
-      <Wrapper>
-        <div className="imgContainer">
-          <img src={icon} alt="Icon du site" />
-        </div>
-        {!responsiveMenu ? <NavMenu /> : <MobilMenu />}
       </Wrapper>
     </>
   ) : null;

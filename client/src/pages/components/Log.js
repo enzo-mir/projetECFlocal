@@ -7,6 +7,7 @@ import {
 } from "../../assets/style/logStyle";
 import postCreateAccount from "../../data/postCreateAccount";
 import postConnection from "../../data/postConnection";
+import { Cross } from "../../assets/style/cross";
 
 const Log = ({ displayPage, togglePage }) => {
   const [page, setPage] = useState(togglePage);
@@ -120,6 +121,7 @@ const Log = ({ displayPage, togglePage }) => {
   return (
     <Overlay onClick={() => displayPage(false)}>
       <LogContainer onClick={(e) => e.stopPropagation()}>
+        <Cross onClick={() => displayPage(false)} />
         {page === "signin" ? (
           <>
             <h1>Inscrivez-vous</h1>

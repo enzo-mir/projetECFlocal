@@ -2,11 +2,7 @@ import styled from "styled-components";
 
 const LogContainer = styled.section`
   position: absolute;
-  &:has(div > div) {
-    grid-template-rows: auto 1fr auto;
-  }
   display: grid;
-  gap: 5vh;
   place-items: center;
   padding-block: 50px;
   width: 1000px;
@@ -15,6 +11,7 @@ const LogContainer = styled.section`
   z-index: 150;
   background-color: #fff;
   font-size: var(--font-size);
+  grid-template-rows: auto auto 1fr auto;
 
   & p {
     text-align: center;

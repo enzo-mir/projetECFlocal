@@ -24,10 +24,10 @@ export const ContainerSettings = styled.div`
     place-items: center;
 
     @media screen and (max-width: 600px) {
-      height: 100%;
+      height: auto;
       grid-template-columns: 1fr;
       justify-content: space-around;
-      row-gap: 5em;
+      row-gap: 2vh;
     }
   }
 
