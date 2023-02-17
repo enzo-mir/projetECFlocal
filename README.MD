@@ -39,7 +39,7 @@ GESTION DE L'ADMIN ET DE LA BDD
     -   Adresse e-mail : admin@admin.com
     -   Mot de passe : admin
 
-# Et une route privé vous serra réservé.
+# Et une route privée vous serra réservé.
 
 FICHIERS ALIMENTATION ET CRÉATION DE LA BDD 
 
