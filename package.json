@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "startserve": "cd server && node server.js",
+    "startInstallclient": "cd client && npm i && npm start",
     "startclient": "cd client && npm start"
   },
   "author": "",

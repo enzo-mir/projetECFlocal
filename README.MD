@@ -17,7 +17,7 @@ EXECUTION DES SCRIPTS
 - Ouvrez un terminal et tapez : git clone https://github.com/enzo-mir/projetECFlocal.git
 - Activez la liaison Appache et MySQL 
 - Ouvrir 2 terminals (VsCode à la racine du projet) 
-- Dans l'un tapez : npm run startserve
+- Dans l'un tapez : `npm run startserve`
 - Dans le deuxième :
     -   la première fois `npm run startInstallclient` => qui installe des dépendance react et lance l'app
     -   les autres fois `npm run startclient` => lance l'app
