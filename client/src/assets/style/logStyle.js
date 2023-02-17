@@ -3,7 +3,7 @@ import styled from "styled-components";
 const LogContainer = styled.section`
   position: absolute;
   display: grid;
-  place-items: center;
+  align-items: center;
   padding-block: 50px;
   width: 1000px;
   min-height: 60vh;
@@ -11,7 +11,6 @@ const LogContainer = styled.section`
   z-index: 150;
   background-color: #fff;
   font-size: var(--font-size);
-  grid-template-rows: auto auto 1fr auto;
 
   & p {
     text-align: center;
@@ -44,6 +43,7 @@ const LogContainer = styled.section`
 
 const ContentSignIn = styled.div`
   display: grid;
+  place-items: center;
   row-gap: 4vh;
 
   & .adds {
@@ -56,6 +56,7 @@ const ContentSignIn = styled.div`
   div {
     display: flex;
     column-gap: 3vw;
+    width: 80%;
 
     input {
       background-color: var(--primary-color);
