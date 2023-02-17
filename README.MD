@@ -18,7 +18,10 @@ EXECUTION DES SCRIPTS
 - Activez la liaison Appache et MySQL 
 - Ouvrir 2 terminals (VsCode à la racine du projet) 
 - Dans l'un tapez : npm run startserve
-- Dans le deuxième : npm run startclient
+- Dans le deuxième :
+    -   la première fois `npm run startInstallclient` => qui installe des dépendance react et lance l'app
+    -   les autres fois `npm run startclient` => lance l'app
+
 
 =>L'application react s'ouvrira directement (au port 3000 du localhost normallement) 
 

@@ -32,8 +32,9 @@ let bddConfig = {
 };
 
 var viergeConnection = mysql.createConnection(bddConfig);
-viergeConnection.connect((error) => {
+viergeConnection.connect((error, connect) => {
   viergeConnection.query("CREATE DATABASE IF NOT EXISTS `ecfprojet`");
+  if (error) throw error;
 });
 
 app.post("/api", (req, res) => {

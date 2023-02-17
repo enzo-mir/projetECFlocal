@@ -21,7 +21,6 @@ export default function Reserv({ res }) {
   const [resError, setResError] = useState("");
   const [showAllergy, setShowAllergy] = useState(false);
   const [alergy, setAlergy] = useState();
-  const [timeLapsJourney, setTimelapsJourney] = useState();
 
   useEffect(() => {
     query().then((data) => setFet(data.heures));
@@ -56,26 +55,29 @@ export default function Reserv({ res }) {
   function unselectHours() {
     document.onmouseup = (e) => {
       let obj = document.querySelector(".selected");
-      if (!obj.contains(e.target)) {
-        obj.classList.remove("selected");
+      if (obj !== null) {
+        if (
+          obj !== e.target &&
+          document.getElementById("submitRes") !== e.target
+        ) {
+          obj.classList.remove("selected");
+        }
       }
     };
   }
+  let time;
 
   function selectHours(e) {
     unselectHours();
     let parentToGetJourney =
       e.target.parentNode.parentNode.parentNode.getAttribute("id");
-    let getJourney = parentToGetJourney.slice(
-      0,
-      parentToGetJourney.indexOf("Hours")
-    );
     let oldTarget = document.querySelector(".selected");
     if (oldTarget) oldTarget.removeAttribute("class");
     let target = e.target;
     target.classList.add("selected");
-    setTimelapsJourney(getJourney);
+    time = parentToGetJourney.slice(0, parentToGetJourney.indexOf("Hours"));
   }
+
   function returnData(time) {
     switch (time) {
       case "12H - 14H":
@@ -122,7 +124,6 @@ export default function Reserv({ res }) {
     let hourTargeted = document.querySelector(".selected")
       ? document.querySelector(".selected").textContent
       : null;
-
     if (guests > 0 && guests < 10) {
       if (date !== null) {
         if (email !== undefined) {
@@ -136,12 +137,11 @@ export default function Reserv({ res }) {
                   name,
                   hourTargeted,
                   alergy,
-                  timeLapsJourney
+                  time
                 )
                   .then((res) => res.json())
                   .then(async (data) => {
                     await data;
-                    console.log(data);
                     if (Object.keys(data) == "error") {
                       setResError(data.error);
                     } else {
@@ -155,7 +155,15 @@ export default function Reserv({ res }) {
                   });
               } else {
                 setResError("Votre réservation à bien été pris en compte");
-                postReservation(guests, date, email, name, hourTargeted, "");
+                postReservation(
+                  guests,
+                  date,
+                  email,
+                  name,
+                  hourTargeted,
+                  "",
+                  time
+                );
                 e.target.style.pointerEvents = "none";
 
                 setTimeout(() => {
@@ -280,7 +288,14 @@ export default function Reserv({ res }) {
               onchange={(e) => setAlergy(e.target.value)}
             />
           )}
-          <button type="submit" onClick={submitReservation}>
+          <button
+            id="submitRes"
+            type="submit"
+            onClick={(e) => {
+              e.stopPropagation();
+              submitReservation(e);
+            }}
+          >
             Réservez la table
           </button>
         </div>
