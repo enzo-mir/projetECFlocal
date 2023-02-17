@@ -38,10 +38,8 @@ GESTION DE L'ADMIN ET DE LA BDD
 -   Pour accéder à l'espace admin en ligne comme en local il faudra se connecter sur l'application avec les données suivantes :
     -   Adresse e-mail : admin@admin.com
     -   Mot de passe : admin
-    
-# Et une route privé vous serra réservé.
 
-##
+# Et une route privé vous serra réservé.
 
 FICHIERS ALIMENTATION ET CRÉATION DE LA BDD 
 
