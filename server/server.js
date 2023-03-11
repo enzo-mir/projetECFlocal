@@ -3,6 +3,7 @@ const mysql = require("mysql");
 var bodyParser = require("body-parser");
 let cloudinary = require("cloudinary").v2;
 var cors = require("cors");
+let jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 7000;
 
 const app = express();
@@ -153,20 +154,17 @@ app.post("/api", (req, res) => {
 
   /* FINAL RESULT WITH THE 3 TABLE */
 
-  connectionNew.query("SELECT * FROM `connexion`", (error, connexion) => {
+  connectionNew.query("SELECT * FROM `heures`", (error, heures) => {
     error ? console.log(error) : null;
-    connectionNew.query("SELECT * FROM `heures`", (error, heures) => {
+    connectionNew.query("SELECT * FROM `reserver`", (error, reservation) => {
       error ? console.log(error) : null;
-      connectionNew.query("SELECT * FROM `reserver`", (error, reservation) => {
-        error ? console.log(error) : null;
-        connectionNew.query(
-          "SELECT `id`, `titre`, `description`, `lien` FROM `images`",
-          (error, image) => {
-            error ? console.log(error) : null;
-            res.send({ connexion, heures, reservation, image });
-          }
-        );
-      });
+      connectionNew.query(
+        "SELECT `id`, `titre`, `description`, `lien` FROM `images`",
+        (error, image) => {
+          error ? console.log(error) : null;
+          res.send({ heures, reservation, image });
+        }
+      );
     });
   });
 
@@ -217,18 +215,35 @@ app.post("/api", (req, res) => {
           ) {
             res.send({ admin: "accés au contenus admin" }).status(200);
           } else {
-            res.send(success).status(200);
+            let token = jwt.sign(
+              { success },
+              "4a380950f5b402fb5234ea50dcbcdb11",
+              { algorithm: "HS256" }
+            );
+            res.send({ token });
           }
         }
       }
     );
   });
 
+  app.post("/jwt", (req, res) => {
+    let acces = jwt.verify(
+      req.headers.authorization,
+      "4a380950f5b402fb5234ea50dcbcdb11"
+    );
+    if (acces.success) {
+      res.send(acces.success[0]);
+    } else {
+      res.send(acces.valid[0]);
+    }
+  });
+
   /* UPDATE DE USER PROFIL */
 
   app.post("/updateProfil", (req, res) => {
     connectionNew.query(
-      `UPDATE connexion SET userName="${req.body.nom}",email="${req.body.email}",convive=${req.body.convives},alergie="${req.body.alergies}" WHERE email="${req.body.oldEmail}" AND password="${req.body.mdp}"`,
+      `UPDATE connexion SET userName="${req.body.nom}",email="${req.body.email}",convive=${req.body.convives},alergie="${req.body.alergies}",password="${req.body.mdp}" WHERE email="${req.body.oldEmail}" AND password="${req.body.oldPassword}"`,
       (error, success) => {
         if (success) {
           connectionNew.query(
@@ -240,7 +255,12 @@ app.post("/api", (req, res) => {
                     "Un problème est survenus lors de l'édition du profil",
                 });
               } else {
-                res.send(valid).status(200);
+                let token = jwt.sign(
+                  { valid },
+                  "4a380950f5b402fb5234ea50dcbcdb11",
+                  { algorithm: "HS256" }
+                );
+                res.send({ token });
               }
             }
           );

@@ -1,12 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import styled from "styled-components";
 import editBtn from "../../assets/images/edit_btn.png";
+import { Cross } from "../../assets/style/cross";
 
 const AdminEditImages = ({ title, description, url, displaying, adding }) => {
   const [titleChange, setTitleChange] = useState(title);
   const [descChange, setDescChange] = useState(description);
   const [imgSrc, setImgSrc] = useState(url);
+  const [errorFormat, setErrorFormat] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      document.body.removeAttribute("style");
+    };
+  }, []);
+
+  document.body.style.overflow = "hidden";
 
   const [imgTargetFile, setImgTargetFile] = useState();
   let fd = useRef(null);
@@ -22,102 +32,124 @@ const AdminEditImages = ({ title, description, url, displaying, adding }) => {
   }
 
   async function handleSubmit() {
-    if (imgTargetFile) {
-      fetch(`https://api.cloudinary.com/v1_1/dbo6hyl8t/image/upload`, {
-        method: "POST",
-        body: fd.current,
-      })
-        .then((response) => response.json())
-        .then(async (data) => {
-          await data;
-          let postDataImage = fetch("/adminImageEdited", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json; charset=utf-8",
-              Connection: "keep-alive",
-              Accept: "*",
-            },
-            body: JSON.stringify({
-              titre: titleChange,
-              desc: descChange,
-              oldUrl: url,
-              newUrl: data.secure_url,
-              pubId: data.public_id,
-              add: false,
-            }),
+    if (
+      imgTargetFile.type === "image/png" ||
+      imgTargetFile.type === "image/jpeg" ||
+      imgTargetFile.type === "image/jpg"
+    ) {
+      if (imgTargetFile) {
+        fetch(`https://api.cloudinary.com/v1_1/dbo6hyl8t/image/upload`, {
+          method: "POST",
+          body: fd.current,
+        })
+          .then((response) => response.json())
+          .then(async (data) => {
+            await data;
+            let postDataImage = fetch("/adminImageEdited", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                Connection: "keep-alive",
+                Accept: "*",
+              },
+              body: JSON.stringify({
+                titre: titleChange,
+                desc: descChange,
+                oldUrl: url,
+                newUrl: data.secure_url,
+                pubId: data.public_id,
+                add: false,
+              }),
+            });
+            await postDataImage.then(window.location.reload());
           });
-          await postDataImage.then(window.location.reload());
+      } else {
+        let postDataImage = fetch("/adminImageEdited", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            Connection: "keep-alive",
+            Accept: "*",
+          },
+          body: JSON.stringify({
+            titre: titleChange,
+            desc: descChange,
+            oldUrl: url,
+            newUrl: url,
+            pubId: null,
+            add: false,
+          }),
         });
+        await postDataImage.then(window.location.reload());
+      }
+      setErrorFormat(false);
     } else {
-      let postDataImage = fetch("/adminImageEdited", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Connection: "keep-alive",
-          Accept: "*",
-        },
-        body: JSON.stringify({
-          titre: titleChange,
-          desc: descChange,
-          oldUrl: url,
-          newUrl: url,
-          pubId: null,
-          add: false,
-        }),
-      });
-      await postDataImage.then(window.location.reload());
+      setErrorFormat("Erreur de format, format convenus : JPG, PNG, JPEG ");
     }
   }
 
   function handleAdd() {
-    if (imgTargetFile) {
-      if (titleChange) {
-        if (descChange) {
-          fetch(`https://api.cloudinary.com/v1_1/dbo6hyl8t/image/upload`, {
-            method: "POST",
-            body: fd.current,
-          })
-            .then((response) => response.json())
-            .then(async (data) => {
-              await data;
-              let postDataImage = fetch("/adminImageEdited", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json; charset=utf-8",
-                  Connection: "keep-alive",
-                  Accept: "*",
-                },
-                body: JSON.stringify({
-                  titre: titleChange,
-                  desc: descChange,
-                  oldUrl: data.secure_url,
-                  newUrl: data.secure_url,
-                  pubId: data.public_id,
-                  add: true,
-                }),
+    if (
+      imgTargetFile.type === "image/png" ||
+      imgTargetFile.type === "image/jpeg" ||
+      imgTargetFile.type === "image/jpg"
+    ) {
+      if (imgTargetFile) {
+        if (titleChange) {
+          if (descChange) {
+            fetch(`https://api.cloudinary.com/v1_1/dbo6hyl8t/image/upload`, {
+              method: "POST",
+              body: fd.current,
+            })
+              .then((response) => response.json())
+              .then(async (data) => {
+                await data;
+                let postDataImage = fetch("/adminImageEdited", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    Connection: "keep-alive",
+                    Accept: "*",
+                  },
+                  body: JSON.stringify({
+                    titre: titleChange,
+                    desc: descChange,
+                    oldUrl: data.secure_url,
+                    newUrl: data.secure_url,
+                    pubId: data.public_id,
+                    add: true,
+                  }),
+                });
+                await postDataImage.then(window.location.reload());
               });
-              await postDataImage.then(window.location.reload());
-            });
+          }
         }
       }
+    } else {
+      setErrorFormat("Erreur de format, format convenus : JPG, PNG, JPEG ");
     }
   }
 
   return (
     <Overlay onClick={() => displaying(false)}>
       <ContainerWrapper onClick={(e) => e.stopPropagation()}>
+        <Cross onClick={() => displaying(false)} />
+        {errorFormat && <p>{errorFormat}</p>}
         <input
           type="file"
           id="imageAdminChange"
           onChange={(e) => {
             handleChange(e);
           }}
+          accept="image/png, image/jpeg, image/jpg"
         />
         <label htmlFor="imageAdminChange">
           {adding ? (
             <div
               className="addImageCase"
-              style={{ background: imgSrc ? "url(" + imgSrc + ")" : "black" }}
+              style={{
+                background: imgSrc ? "url(" + imgSrc + ")" : "black",
+              }}
             ></div>
           ) : (
             <img src={imgSrc} alt="plat du chef" />

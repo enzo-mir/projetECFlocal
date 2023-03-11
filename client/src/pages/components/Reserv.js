@@ -8,8 +8,8 @@ import {
   ReservationContainer,
   HoursList,
 } from "../../assets/style/reserveStyle";
-import { userData } from "../../data/Connect";
 import { Cross } from "../../assets/style/cross";
+import dataJWT from "../../data/dataJWT";
 
 export default function Reserv({ res }) {
   const [fet, setFet] = useState([]);
@@ -21,11 +21,30 @@ export default function Reserv({ res }) {
   const [resError, setResError] = useState("");
   const [showAllergy, setShowAllergy] = useState(false);
   const [alergy, setAlergy] = useState();
+  const [DTable, setDTable] = useState([]);
+  const [LTable, setLTable] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     query().then((data) => setFet(data.heures));
     isConnected();
+
+    // eslint-disable-next-line no-unused-expressions
+    typeof window.localStorage.getItem("userToken") === "string"
+      ? dataJWT().then(async (data) => {
+          setUserData(await data);
+        })
+      : null;
+    console.log(userData);
+    return () => {
+      document.body.removeAttribute("style");
+    };
   }, []);
+
+  let lunchTable = [];
+  let dinnerTable = [];
+
+  document.body.style.overflow = "hidden";
 
   function handleChangeDate(e) {
     let dateDay = new Date(e.target.value).toLocaleDateString("fr-FR", {
@@ -36,21 +55,67 @@ export default function Reserv({ res }) {
 
     setDate(fullDate);
     setDayDate(dateDay);
+
+    let hourFetchLunch;
+    let hourFetchDinner;
+
+    fet.forEach((elem) => {
+      if (Object.values(elem)[1] === dateDay) {
+        hourFetchLunch = elem.lunch;
+        hourFetchDinner = elem.dinner;
+        console.log(elem);
+        if (elem.lunch.indexOf("-") === -1) {
+          setLTable("Fermer");
+        }
+        if (elem.dinner.indexOf("-") === -1) {
+          setDTable("Fermer");
+        }
+      }
+    });
+    spliting(hourFetchLunch, lunchTable);
+    spliting(hourFetchDinner, dinnerTable);
+    function spliting(fetch, table) {
+      if (fetch.indexOf("-") !== -1) {
+        let splitingLunch = fetch.split(" - ");
+        let splitHourLunch = splitingLunch[0].split("h");
+        let splitMinuteLunch = splitingLunch[1].split("h");
+        let startHourLunch = parseInt(splitHourLunch[0]);
+        let endHourLunch = parseInt(splitMinuteLunch[0]);
+        let startDecimalLunch = parseInt(splitHourLunch[1]) / 60;
+        let endDecimalLunch = parseInt(splitMinuteLunch[1]) / 60;
+        let fullStartLunch = isNaN(startDecimalLunch)
+          ? startHourLunch
+          : startHourLunch + startDecimalLunch;
+        let fullEndLunch = isNaN(endDecimalLunch)
+          ? endHourLunch
+          : endHourLunch + endDecimalLunch;
+
+        for (let i = fullStartLunch; i <= fullEndLunch - 0.5; i += 0.25) {
+          table.push(i + "");
+        }
+        table.forEach((elem) => {
+          var sliceMinutes;
+          if (elem.indexOf(".") !== -1) {
+            sliceMinutes =
+              elem.slice(3) / 100 === 0.05
+                ? elem.slice(0, elem.indexOf(".")) +
+                  "h" +
+                  (elem.slice(3) * 6).toString()
+                : elem.slice(0, elem.indexOf(".")) +
+                  "h" +
+                  (elem.slice(3) * 0.6).toString();
+          } else sliceMinutes = elem + "h";
+
+          table.push(sliceMinutes);
+        });
+        if (table == dinnerTable) {
+          setDTable(table.slice(table.length / 2));
+        } else if (table == lunchTable) {
+          setLTable(table.slice(table.length / 2));
+        }
+      }
+    }
   }
-  let lunchTable = ["12h", "12h15", "12h30", "12h45", "13h", "13h15", "13h30"];
-  let dinnerTable = ["19h", "19h15", "19h30", "19h45", "20h", "20h15", "20h30"];
-  let saturdayTable = [
-    "19h",
-    "19h15",
-    "19h30",
-    "19h45",
-    "20h",
-    "20h15",
-    "20h30",
-    "21h",
-    "21h15",
-    "21h30",
-  ];
 
   function unselectHours() {
     document.onmouseup = (e) => {
@@ -76,39 +141,6 @@ export default function Reserv({ res }) {
     let target = e.target;
     target.classList.add("selected");
     time = parentToGetJourney.slice(0, parentToGetJourney.indexOf("Hours"));
-  }
-
-  function returnData(time) {
-    switch (time) {
-      case "12H - 14H":
-        return lunchTable.map((lunch, id) => {
-          return (
-            <button key={id} onClick={selectHours} tabIndex={id}>
-              {lunch}
-            </button>
-          );
-        });
-      case "19H - 22H":
-        return dinnerTable.map((dinner, id) => {
-          return (
-            <button key={id} onClick={selectHours} tabIndex={id + 7}>
-              {dinner}
-            </button>
-          );
-        });
-      case "19H - 23H":
-        return saturdayTable.map((dinner, id) => {
-          return (
-            <button key={id} onClick={selectHours} tabIndex={id + 7}>
-              {dinner}
-            </button>
-          );
-        });
-      case "fermer":
-        return time;
-      default:
-        break;
-    }
   }
 
   const ErrorReservation = () => {
@@ -237,19 +269,17 @@ export default function Reserv({ res }) {
           <h2>MIDI</h2>
           <div className="hours">
             <HoursList>
-              {fet.map((data) => {
-                return data.day === dayDate
-                  ? dayDate === "lundi" ||
-                    dayDate === "mardi" ||
-                    dayDate === "jeudi" ||
-                    dayDate === "mercredi" ||
-                    dayDate === "vendredi" ||
-                    dayDate === "samedi" ||
-                    dayDate === "dimanche"
-                    ? returnData(data.lunch)
-                    : null
-                  : null;
-              })}
+              {typeof LTable === "object" ? (
+                LTable.map((lunch, id) => {
+                  return (
+                    <button key={id} onClick={selectHours} tabIndex={id}>
+                      {lunch}
+                    </button>
+                  );
+                })
+              ) : (
+                <p>{LTable}</p>
+              )}
             </HoursList>
           </div>
         </div>
@@ -257,19 +287,17 @@ export default function Reserv({ res }) {
           <h2>SOIR</h2>
           <div className="hours">
             <HoursList>
-              {fet.map((data) => {
-                return data.day === dayDate
-                  ? dayDate === "lundi" ||
-                    dayDate === "mardi" ||
-                    dayDate === "jeudi" ||
-                    dayDate === "mercredi" ||
-                    dayDate === "vendredi" ||
-                    dayDate === "samedi" ||
-                    dayDate === "dimanche"
-                    ? returnData(data.dinner)
-                    : null
-                  : null;
-              })}
+              {typeof DTable === "object" ? (
+                DTable.map((dinner, id) => {
+                  return (
+                    <button key={id} onClick={selectHours} tabIndex={id}>
+                      {dinner}
+                    </button>
+                  );
+                })
+              ) : (
+                <p>{DTable}</p>
+              )}
             </HoursList>
           </div>
         </div>

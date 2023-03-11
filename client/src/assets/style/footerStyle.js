@@ -63,12 +63,13 @@ export const Wrapper = styled.footer`
   & nav {
     width: 30%;
     & ul {
-      width: 100%;
       display: flex;
+      width: 100%;
       justify-content: space-around;
       align-items: center;
       column-gap: 2.5vw;
       background-color: var(--primary-color);
+      border-radius: 10px;
       padding: 1em;
       & a {
         color: var(--darker-color);
@@ -81,7 +82,7 @@ export const Wrapper = styled.footer`
     font-size: var(--font-size-little);
   }
 
-  @media screen and (max-width : 800px) {
+  @media screen and (max-width: 800px) {
     & nav {
       width: 50%;
     }
@@ -90,7 +91,7 @@ export const Wrapper = styled.footer`
     }
   }
 
-  @media screen and (max-width : 600px) {
+  @media screen and (max-width: 600px) {
     width: 100%;
     & nav {
       width: 100%;

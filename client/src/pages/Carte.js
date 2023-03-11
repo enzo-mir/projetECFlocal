@@ -9,6 +9,7 @@ import {
   DessertSection,
   MenuSection,
 } from "../assets/style/carteStyle";
+import Loading from "./Loading";
 
 export default function Carte() {
   const [carteFetched, setCarteFetched] = useState();
@@ -30,7 +31,6 @@ export default function Carte() {
       setMenu(data.menu);
     });
   }, []);
-
   function mapingSimilarityFood(food, title) {
     return food === entree || food === plat ? (
       <>
@@ -118,6 +118,6 @@ export default function Carte() {
       </CarteContainer>
     </>
   ) : (
-    <div>Chargement</div>
+    <Loading />
   );
 }

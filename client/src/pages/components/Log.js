@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import {
   LogContainer,
@@ -8,6 +8,7 @@ import {
 import postCreateAccount from "../../data/postCreateAccount";
 import postConnection from "../../data/postConnection";
 import { Cross } from "../../assets/style/cross";
+import Connect from "../../data/Connect";
 
 const Log = ({ displayPage, togglePage }) => {
   const [page, setPage] = useState(togglePage);
@@ -22,6 +23,14 @@ const Log = ({ displayPage, togglePage }) => {
   const [loginEmail, setLoginEmail] = useState();
   const [loginPassword, setLoginPassword] = useState();
   const [loginConfirmation, setLoginConfirmation] = useState("");
+
+  useEffect(() => {
+    return () => {
+      document.body.removeAttribute("style");
+    };
+  }, []);
+
+  document.body.style.overflow = "hidden";
 
   let signinData = {
     signinName,
@@ -99,8 +108,8 @@ const Log = ({ displayPage, togglePage }) => {
           window.localStorage.getItem("adminLogin")
             ? window.localStorage.clear("adminLogin")
             : null,
-          window.localStorage.setItem("userLogin", JSON.stringify(data)),
-          (window.location.href = "/"),
+          window.localStorage.setItem("userToken", JSON.stringify(data.token)),
+          window.location.reload(),
           event !== null ? (event.target.style.pointerEvents = "none") : null,
           setTimeout(() => {
             if (event !== null) event.target.style.pointerEvents = "auto";

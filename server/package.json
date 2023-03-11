@@ -12,6 +12,7 @@
   "dependencies": {
     "cloudinary": "^1.33.0",
     "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1"
   }
 }

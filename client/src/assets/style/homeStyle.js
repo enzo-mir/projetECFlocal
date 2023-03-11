@@ -52,6 +52,7 @@ const ContextText = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+
   &::after {
     position: absolute;
     content: "";
@@ -64,6 +65,7 @@ const ContextText = styled.div`
   & p {
     font-size: var(--font-size-bigger);
     width: 60%;
+    border-radius: 10px;
     text-align: center;
     background-color: var(--primary-color);
     line-height: 200%;
@@ -139,6 +141,7 @@ const SectionPlats = styled.section`
     background-color: var(--primary-color);
     padding: 1em;
     line-height: 150%;
+    border-radius: 10px;
   }
   & button {
     grid-area: 2 / 2 / 3 / 3;

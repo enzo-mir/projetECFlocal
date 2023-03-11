@@ -1,16 +1,18 @@
 import styled from "styled-components";
 
 const LogContainer = styled.section`
-  position: absolute;
-  display: grid;
-  align-items: center;
-  padding-block: 50px;
-  width: 1000px;
-  min-height: 60vh;
-  max-width: 100%;
-  z-index: 150;
-  background-color: #fff;
-  font-size: var(--font-size);
+position: absolute;
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+align-items: center;
+gap: 30px;
+padding-block: 25px;
+width: 1000px;
+min-height: 60%;
+max-width: 100%;
+z-index: 150;
+background-color: #fff;
 
   & p {
     text-align: center;

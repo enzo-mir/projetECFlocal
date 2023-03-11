@@ -1,5 +1,5 @@
-import React, { Children, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import icon from "../../assets/images/icon.svg";
 import Log from "../components/Log";
 import {
@@ -7,16 +7,25 @@ import {
   HeaderContainer,
   BtnMenu,
 } from "../../assets/style/headerStyle";
-import { userData } from "../../data/Connect";
 import ProfilComponent from "./ProfilComponent";
-import styled from "styled-components";
 import Reserv from "./Reserv";
+import dataJWT from "../../data/dataJWT";
 
 const Header = ({ isConnected, display }) => {
   const [logPage, setLogPage] = useState(false);
   const [profilPage, setProfilPage] = useState(false);
   const [res, setRes] = useState(false);
   const [togglePage, setTogglePage] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    typeof window.localStorage.getItem("userToken") === "string"
+      ? dataJWT().then(async (data) => {
+          setUserInfo(await data);
+        })
+      : null;
+  }, []);
 
   document.onmouseup = (e) => {
     let obj = document.querySelector("header");
@@ -31,13 +40,27 @@ const Header = ({ isConnected, display }) => {
   const NavMenu = () => {
     return (
       <HeaderContainer>
-        <NavContent>
+        <nav>
           <ul>
             <li>
-              <Link to="/">Accueil</Link>
+              <NavLink
+                to="/"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : ""
+                }
+              >
+                Accueil
+              </NavLink>
             </li>
             <li>
-              <Link to="/carte">Carte</Link>
+              <NavLink
+                to="/carte"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : ""
+                }
+              >
+                Carte
+              </NavLink>
             </li>
             <li>
               <button className="btnReserve" onClick={() => setRes(true)}>
@@ -45,7 +68,7 @@ const Header = ({ isConnected, display }) => {
               </button>
             </li>
           </ul>
-        </NavContent>
+        </nav>
         <div className="profil">
           {!isConnected ? (
             <>
@@ -70,7 +93,7 @@ const Header = ({ isConnected, display }) => {
             </>
           ) : (
             <button id="profil" onClick={() => setProfilPage(true)}>
-              {userData.userName.charAt(0)}
+              {userInfo && userInfo.userName.charAt(0)}
             </button>
           )}
         </div>
@@ -81,12 +104,16 @@ const Header = ({ isConnected, display }) => {
   return display ? (
     <>
       {logPage && <Log displayPage={setLogPage} togglePage={togglePage} />}
-      {profilPage && <ProfilComponent displayProfil={setProfilPage} />}
+      {profilPage && (
+        <ProfilComponent displayProfil={setProfilPage} userData={userInfo} />
+      )}
       {res && <Reserv res={setRes} />}
 
       <Wrapper>
         <div className="imgContainer">
-          <img src={icon} alt="Icon du site" />
+          <Link to="/">
+            <img src={icon} alt="Icon du site" />
+          </Link>
         </div>
         <NavMenu />
         <BtnMenu
@@ -116,7 +143,5 @@ const Header = ({ isConnected, display }) => {
     </>
   ) : null;
 };
-
-const NavContent = styled.nav``;
 
 export default Header;

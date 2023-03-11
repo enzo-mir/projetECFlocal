@@ -11,7 +11,7 @@ const EditCarteContainer = styled.div`
   max-width: 100%;
   z-index: 150;
   background-color: #fff;
-  font-size: var(--font-size);
+
   & > div:first-child {
     grid-area: 1 / 1 / 2 / 3;
   }
@@ -35,6 +35,12 @@ const HoursContainer = styled.article`
   flex-direction: column;
   gap: 50px;
   font-size: var(--font-size);
+
+  .format {
+    transition: 0.5s ease-in;
+    color: red;
+    font-size: var(--font-size-reg);
+  }
 
   & table {
     display: grid;

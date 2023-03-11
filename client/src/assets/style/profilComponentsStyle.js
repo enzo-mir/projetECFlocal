@@ -12,7 +12,6 @@ export const ContainerSettings = styled.div`
   max-width: 100%;
   z-index: 150;
   background-color: #fff;
-  font-size: var(--font-size);
 
   & > div {
     &.passwordField {

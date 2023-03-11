@@ -52,6 +52,10 @@ const HeaderContainer = styled.div`
         & a {
           color: var(--darker-color);
           text-decoration: none;
+          &.active {
+            text-decoration: underline;
+            text-underline-offset: 10px;
+          }
         }
       }
     }

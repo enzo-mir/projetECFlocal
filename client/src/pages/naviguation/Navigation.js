@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "../Home";
 import Carte from "../Carte";
 import Admin from "../Admin";
@@ -23,14 +23,14 @@ const Navigation = ({ connected, admin }) => {
             <Route path="*" element={<UndifinedRoute />} />
             <Route path="/" element={<Home />} />
             <Route path="/carte" element={<Carte />} />
-            {isAdmin === true ? (
+            {isAdmin && (
               <Route element={<PrivateRoute isAdmin={isAdmin} />}>
                 <Route path="/admin" element={<Admin />} />
               </Route>
-            ) : null}
+            )}
           </Routes>
+          <Footer />
         </>
-        <Footer />
       </BrowserRouter>
     </>
   );

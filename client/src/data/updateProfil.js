@@ -4,7 +4,8 @@ export default async function updateProfil(
   mdp,
   convives,
   alergies,
-  oldEmail
+  oldEmail,
+  oldPassword
 ) {
   let postUpdateAccount = fetch("/updateProfil", {
     method: "POST",
@@ -21,10 +22,12 @@ export default async function updateProfil(
       convives: convives,
       alergies: alergies,
       oldEmail: oldEmail,
+      oldPassword: oldPassword,
     }),
   });
   let postRes = postUpdateAccount
     .then((res) => res.json())
     .then(async (data) => await data);
+
   return postRes;
 }

@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 const UndifinedRoute = () => {
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, []);
+
+  document.body.style.overflow = "hidden";
   return (
     <Wrapper>
       <h1>Error 404 : page introuvable</h1>

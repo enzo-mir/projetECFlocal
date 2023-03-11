@@ -5,19 +5,18 @@ import guests from "../images/guests.png";
 
 const ReservationContainer = styled.section`
   position: absolute;
-  display: grid;
-  grid-template-rows: 0 1fr 1fr 1fr1 1fr;
-  gap: 5vh;
-  place-items: center;
-  padding-block: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+  padding-block: 25px;
   width: 1000px;
-  max-width: calc(100% - 65px);
-  max-height: 600px;
-  overflow-y: scroll;
+  min-height: 60%;
+  max-width: 100%;
   z-index: 150;
   background-color: #fff;
-  font-size: var(--font-size);
-  padding-inline: 1em;
+  overflow-y: scroll;
 
   & h1 {
     font-size: var(--font-size-bigger);

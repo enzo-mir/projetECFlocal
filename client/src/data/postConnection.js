@@ -15,5 +15,6 @@ export default function postConnection(email, mdp) {
   let postRes = postAccount
     .then((res) => res.json())
     .then(async (data) => await data);
+
   return postRes;
 }

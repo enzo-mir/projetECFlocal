@@ -5,7 +5,7 @@ const CarteContainer = styled.main`
   max-width: 1000px;
   margin: auto;
   min-height: max-content;
-  padding-block: 150px;
+  padding-block: 150px 100px;
   text-align: center;
   display: flex;
   flex-direction: column;

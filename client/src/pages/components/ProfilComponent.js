@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
-import { userData } from "../../data/Connect";
 import { ContainerSettings } from "../../assets/style/profilComponentsStyle";
 import updateProfil from "../../data/updateProfil";
+import Log from "./Log";
 
-const ProfilComponent = ({ displayProfil }) => {
+const ProfilComponent = ({ displayProfil, userData }) => {
   const [editable, setEditable] = useState(false);
   const [name, setName] = useState(userData.userName);
   const [email, setEmail] = useState(userData.email);
@@ -13,6 +13,15 @@ const ProfilComponent = ({ displayProfil }) => {
   const [validationMessage, setValidationMessage] = useState();
   const [mdp, setMdp] = useState(userData.password);
   let oldEmail = userData.email;
+  let oldPassword = userData.password;
+
+  useEffect(() => {
+    return () => {
+      document.body.removeAttribute("style");
+    };
+  }, []);
+
+  document.body.style.overflow = "hidden";
 
   let updateData = {
     name,
@@ -21,6 +30,7 @@ const ProfilComponent = ({ displayProfil }) => {
     guests,
     alergy,
     oldEmail,
+    oldPassword,
   };
 
   function edit(content) {
@@ -78,14 +88,15 @@ const ProfilComponent = ({ displayProfil }) => {
                 values[2],
                 values[3],
                 values[4],
-                values[5]
+                values[5],
+                values[6]
               ).then((data) =>
                 Object.keys(data) == "erreur"
                   ? setValidationMessage(Object.values(data))
                   : (setValidationMessage("Profil mis a jour"),
                     window.localStorage.setItem(
-                      "userLogin",
-                      JSON.stringify(data)
+                      "userToken",
+                      JSON.stringify(data.token)
                     ),
                     window.location.reload(),
                     (event.target.style.pointerEvents = "none"),
